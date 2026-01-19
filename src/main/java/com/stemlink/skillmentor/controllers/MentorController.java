@@ -1,5 +1,13 @@
 package com.stemlink.skillmentor.controllers;
 
+import com.stemlink.skillmentor.dto.MentorDTO;
+import com.stemlink.skillmentor.entities.Mentor;
+import com.stemlink.skillmentor.services.MentorService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.Banner;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -7,42 +15,41 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/mentors")
-
+@RequiredArgsConstructor
 public class MentorController {
-    private List<String> mentors = new ArrayList<>((
-            List.of("John", "Peter","Jenny")
-    ));
+
+    private final ModelMapper modelMapper;
+    private final MentorService mentorService;
 
     //fetch all the subjects using arrayList
     @GetMapping
-    public String getAllMentors(@RequestParam(name = "name",defaultValue = "all") String name){
+    public List<Mentor> getAllMentors(){
         System.out.println("GET");
-        System.out.println("filter By name " +name);
-       return mentors.toString();
+       return mentorService.getAllMentors();
     }
 
     @GetMapping("{id}")
-    public String getMentorById(@PathVariable int id){
+    public Mentor getMentorById(@PathVariable Long id){
         System.out.println("GET By Id");
-        return "get subject by id " +id;
+        return mentorService.getMentorById(id);
     }
 
     @PostMapping
-    public String createMentor(){
+    public Mentor createMentor( @RequestBody MentorDTO mentorDTO){
         System.out.println("POST");
-        return "created subjects";
+        Mentor mentor = modelMapper.map(mentorDTO, Mentor.class);
+        return mentorService.createMentor(mentor);
     }
 
     @PutMapping("{id}")
-    public String updateMentorById(@PathVariable int id){
-        System.out.println("UPDATED");
-        return "updated subject by id {}";
+    public Mentor updateMentorById(@Valid @PathVariable Long id, @RequestBody MentorDTO updatedMentorDTO){
+        Mentor mentor = modelMapper.map(updatedMentorDTO, Mentor.class);
+        return mentorService.updateMentorById(id,mentor);
     }
 
     @DeleteMapping("{id}")
-    public String deleteMentor(@PathVariable int id){
+    public void deleteMentor(@PathVariable Long id){
         System.out.println("DELETED");
-        mentors.remove(id);
-        return "deleted subject by id {}";
+         mentorService.deleteMentor(id);
     }
 }

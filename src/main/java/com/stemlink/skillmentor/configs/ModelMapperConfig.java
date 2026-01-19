@@ -1,0 +1,22 @@
+package com.stemlink.skillmentor.configs;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ModelMapperConfig {
+
+
+    @Bean
+    public ModelMapper modelMapper(){
+        ModelMapper modelMapper = new ModelMapper();
+
+        //if the value null skip that value for PATCH operation
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper;
+    }
+
+}
