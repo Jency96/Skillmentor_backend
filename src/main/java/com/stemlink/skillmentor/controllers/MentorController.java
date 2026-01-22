@@ -6,50 +6,54 @@ import com.stemlink.skillmentor.services.MentorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/v1/mentors")
+@RequestMapping(path = "/api/v1/mentors")
 @RequiredArgsConstructor
-public class MentorController {
+@Validated
+public class MentorController extends AbstractController {
 
-    private final ModelMapper modelMapper;
     private final MentorService mentorService;
+    private final ModelMapper modelMapper;
 
-    //fetch all the subjects using arrayList
     @GetMapping
-    public List<Mentor> getAllMentors(){
-        System.out.println("GET");
-       return mentorService.getAllMentors();
+    public ResponseEntity<Page<Mentor>> getAllMentors(Pageable pageable) {
+        Page<Mentor> mentors = mentorService.getAllMentors(pageable);
+        return sendOkResponse(mentors);
     }
 
     @GetMapping("{id}")
-    public Mentor getMentorById(@PathVariable Long id){
-        System.out.println("GET By Id");
-        return mentorService.getMentorById(id);
+    public ResponseEntity<Mentor> getMentorById(@PathVariable Long id) {
+        Mentor mentor = mentorService.getMentorById(id);
+        return sendOkResponse(mentor);
     }
 
     @PostMapping
-    public Mentor createMentor( @RequestBody MentorDTO mentorDTO){
-        System.out.println("POST");
+    public ResponseEntity<Mentor> createMentor(@Valid @RequestBody MentorDTO mentorDTO) {
         Mentor mentor = modelMapper.map(mentorDTO, Mentor.class);
-        return mentorService.createMentor(mentor);
+        Mentor createdMentor = mentorService.createNewMentor(mentor);
+
+        return sendCreatedResponse(createdMentor);
     }
 
     @PutMapping("{id}")
-    public Mentor updateMentorById(@Valid @PathVariable Long id, @RequestBody MentorDTO updatedMentorDTO){
+    public ResponseEntity<Mentor> updateMentor(@PathVariable Long id, @Valid @RequestBody MentorDTO updatedMentorDTO) {
         Mentor mentor = modelMapper.map(updatedMentorDTO, Mentor.class);
-        return mentorService.updateMentorById(id,mentor);
+        Mentor updatedMentor = mentorService.updateMentorById(id, mentor);
+        return sendOkResponse(updatedMentor);
+
     }
 
     @DeleteMapping("{id}")
-    public void deleteMentor(@PathVariable Long id){
-        System.out.println("DELETED");
-         mentorService.deleteMentor(id);
+    public ResponseEntity<Mentor> deleteMentor(@PathVariable Long id) {
+        mentorService.deleteMentor(id);
+        return sendNoContentResponse();
     }
 }

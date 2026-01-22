@@ -1,15 +1,19 @@
 package com.stemlink.skillmentor.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.util.Date;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "subject")
+@Data
 public class Subject {
 
     @Id
@@ -21,4 +25,18 @@ public class Subject {
 
     @Column(nullable = false)
     private String description;
+
+    // --------- Relationship -------------
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mentor_id", nullable = false)
+    @JsonIgnore
+    private Mentor mentor;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }
