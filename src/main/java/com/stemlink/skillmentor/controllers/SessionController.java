@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/sessions")
 @RequiredArgsConstructor
-@Validated
+
 public class SessionController extends AbstractController{
 
     private final SessionService sessionService;

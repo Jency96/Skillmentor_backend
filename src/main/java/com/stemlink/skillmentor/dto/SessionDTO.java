@@ -1,5 +1,6 @@
 package com.stemlink.skillmentor.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class SessionDTO {
     @NotNull(message = "Subject ID cannot be null")
     private Long subjectId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @NotNull(message = "Session date/time cannot be null")
     private Date sessionAt;
 

@@ -53,17 +53,17 @@ public class SessionServiceImpl implements SessionService {
 
 
             // Create and populate the Session entity
-//        Session session = new Session();
-//        session.setSessionAt(sessionDTO.getSessionAt());
-//        session.setDurationMinutes(sessionDTO.getDurationMinutes());
-//        session.setSessionStatus(sessionDTO.getSessionStatus());
-//        session.setMeetingLink(sessionDTO.getMeetingLink());
-//        session.setSessionNotes(sessionDTO.getSessionNotes());
-//        session.setStudentReview(sessionDTO.getStudentReview());
-//        session.setStudentRating(sessionDTO.getStudentRating());
+        Session session = new Session();
+        session.setSessionAt(sessionDTO.getSessionAt());
+        session.setDurationMinutes(sessionDTO.getDurationMinutes());
+        session.setSessionStatus(sessionDTO.getSessionStatus());
+        session.setMeetingLink(sessionDTO.getMeetingLink());
+        session.setSessionNotes(sessionDTO.getSessionNotes());
+        session.setStudentReview(sessionDTO.getStudentReview());
+        session.setStudentRating(sessionDTO.getStudentRating());
 
             // using model mapper
-            Session session = modelMapper.map(sessionDTO, Session.class);
+//            Session session = modelMapper.map(sessionDTO, Session.class);
             session.setStudent(student);
             session.setMentor(mentor);
             session.setSubject(subject);
@@ -73,6 +73,7 @@ public class SessionServiceImpl implements SessionService {
         } catch (SkillMentorException skillMentorException) {
             log.error("Dependencies not found to map: {}, Failed to create new session", skillMentorException.getMessage());
             throw skillMentorException;
+
         } catch (Exception exception) {
             log.error("Failed to create session", exception);
             throw new SkillMentorException("Failed to create new session", HttpStatus.INTERNAL_SERVER_ERROR);

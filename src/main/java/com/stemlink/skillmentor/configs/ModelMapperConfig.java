@@ -14,8 +14,8 @@ public class ModelMapperConfig {
         ModelMapper modelMapper = new ModelMapper();
 
         //if the value null skip that value for PATCH operation
-        modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+//        modelMapper.getConfiguration().setSkipNullEnabled(true);
+//        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper;
     }
 
