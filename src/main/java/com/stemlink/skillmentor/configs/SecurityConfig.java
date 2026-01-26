@@ -1,5 +1,6 @@
 package com.stemlink.skillmentor.configs;
-import com.stemlink.skillmentor.security.JwtAuthenticationFilter;
+//import com.stemlink.skillmentor.security.JwtAuthenticationFilter;
+import com.stemlink.skillmentor.security.ClerkAuthenticationFilter;
 import com.stemlink.skillmentor.security.SkillMentorAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SecurityConfig {
 
 
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private ClerkAuthenticationFilter clerkAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,7 +50,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(skillMentorAuthenticationEntryPoint))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                //clerk filter for filtering username
+                .addFilterBefore(clerkAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

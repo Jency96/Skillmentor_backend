@@ -19,45 +19,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+//@Component
+//@RequiredArgsConstructor
+//public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final SkillMentorJwtValidatior jwtUtil;
-    //  first hit BASE VALIDATOR. then decide if it is --> clerk, aws or service token
-    //then go to filter and validate the token
-
-    @Override
-    protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain)
-            throws ServletException, IOException {
-
-        System.out.println("Authorization header: " + request.getHeader("Authorization"));
-
-        String token = extractToken(request);
-
-        if (token != null && jwtUtil.validateToken(token)) {
-            String username = jwtUtil.extractUsername(token);
-            List<String> roles = jwtUtil.extractRoles(token);
-
-            List<GrantedAuthority> authorities = roles != null ?
-                    roles.stream()
-                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                            .collect(Collectors.toList()) :
-                    new ArrayList<>();
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-
-        filterChain.doFilter(request, response);
-    }
-
-    private String extractToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-}
+// OncePerRequestFilter runs every HTTP request
+//
+//    private final SkillMentorJwtValidatior jwtUtil;
+//    //  first hit BASE VALIDATOR. then decide if it is --> clerk, aws or service token
+//    //then go to filter and validate the token
+//
+//    @Override
+//    protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain)
+//            throws ServletException, IOException {
+//
+//        System.out.println("Authorization header: " + request.getHeader("Authorization"));
+//
+//        String token = extractToken(request);
+//
+//        if (token != null && jwtUtil.validateToken(token)) {
+//            String username = jwtUtil.extractUsername(token);
+//            List<String> roles = jwtUtil.extractRoles(token);
+//
+//            List<GrantedAuthority> authorities = roles != null ?
+//                    roles.stream()
+//                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+//                            .collect(Collectors.toList()) :
+//                    new ArrayList<>();
+//
+//            UsernamePasswordAuthenticationToken authentication =
+//                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//        }
+//
+//        filterChain.doFilter(request, response);
+//    }
+//
+//    private String extractToken(HttpServletRequest request) {
+//        String bearerToken = request.getHeader("Authorization");
+//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+//        return null;
+//    }
+//}

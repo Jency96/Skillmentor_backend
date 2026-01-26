@@ -30,6 +30,8 @@ public class SkillMentorAuthenticationEntryPoint implements AuthenticationEntryP
         log.error("Unauthorized error: {}", authException.getMessage());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        //this returns 401 unauthorized message
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         Map<String, Object> body = new HashMap<>();
