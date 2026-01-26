@@ -25,7 +25,7 @@ public class MentorController extends AbstractController {
     private final ModelMapper modelMapper;
 
     @GetMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('Mentor')")
     public ResponseEntity<Page<Mentor>> getAllMentors(Pageable pageable) {
         Page<Mentor> mentors = mentorService.getAllMentors(pageable);
         return sendOkResponse(mentors);
@@ -38,7 +38,7 @@ public class MentorController extends AbstractController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('Mentor','Admin')")
     public ResponseEntity<Mentor> createMentor(@Valid @RequestBody MentorDTO mentorDTO) {
         Mentor mentor = modelMapper.map(mentorDTO, Mentor.class);
         Mentor createdMentor = mentorService.createNewMentor(mentor);
