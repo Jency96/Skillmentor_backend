@@ -18,8 +18,7 @@ import java.security.PublicKey;
 import java.util.List;
 
 @Slf4j
-@Component
-public class ClerkValidator {
+public class ClerkValidator implements TokenValidator{
 
     private final JwkProvider jwkProvider;
 
@@ -31,7 +30,7 @@ public class ClerkValidator {
             throw new RuntimeException("Failed to initialize Clerk validator", e);
         }
     }
-
+@Override
     public String extractUserId(String token) {
         try {
             if (!validateToken(token)) {
@@ -45,7 +44,7 @@ public class ClerkValidator {
         }
     }
 
-
+    @Override
     public List<String> extractRoles(String token) {
         try {
             if (!validateToken(token)) {
@@ -63,7 +62,7 @@ public class ClerkValidator {
     }
 
 
-
+@Override
     public boolean validateToken(String token){
         try {
             // Step 1: Decode JWT without verification to get header info
