@@ -1,6 +1,6 @@
 package com.stemlink.skillmentor.configs;
 //import com.stemlink.skillmentor.security.JwtAuthenticationFilter;
-import com.stemlink.skillmentor.security.ClerkAuthenticationFilter;
+import com.stemlink.skillmentor.security.AuthenticationFilter;
 import com.stemlink.skillmentor.security.SkillMentorAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -31,10 +30,8 @@ public class SecurityConfig {
     private final SkillMentorAuthenticationEntryPoint skillMentorAuthenticationEntryPoint;
     private final CorsConfigurationSource corsConfigurationSource;
 
-
-
     @Autowired
-    private ClerkAuthenticationFilter clerkAuthenticationFilter;
+    private AuthenticationFilter clerkAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
