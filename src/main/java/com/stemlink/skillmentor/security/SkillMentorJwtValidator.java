@@ -38,6 +38,8 @@ public class SkillMentorJwtValidator implements TokenValidator {
         return (List<String>) getClaims(token).get("roles", List.class);
     }
 
+
+
     @Override
     public boolean validateToken(String token) {
         try {
@@ -50,6 +52,21 @@ public class SkillMentorJwtValidator implements TokenValidator {
             log.error("Failed to validate JWT token: {}",e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public String extractFirstName(String token) {
+        return "";
+    }
+
+    @Override
+    public String extractLastName(String token) {
+        return "";
+    }
+
+    @Override
+    public String extractEmail(String token) {
+        return "";
     }
 
     private Claims getClaims(String token) {

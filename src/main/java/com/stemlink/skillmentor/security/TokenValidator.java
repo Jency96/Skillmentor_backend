@@ -9,4 +9,10 @@ public interface TokenValidator {
     String extractUserId(String token);
 
     List<String> extractRoles(String token);
+
+    String extractFirstName(String token);
+
+    String extractLastName(String token);
+
+    String extractEmail(String token);
 }
