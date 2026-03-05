@@ -1,5 +1,6 @@
 package com.stemlink.skillmentor.security;
 
+
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,16 +40,20 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if (token != null && tokenValidator.validateToken(token)) {
-           // String username = clerkValidator.extractUsername(token);
-           // List<String> roles = clerkValidator.extractRoles(token);
+            String userId = tokenValidator.extractUserId(token);
+//            List<String> roles = new ArrayList<>();
 
-            // Get data from ClerkValidator
-            String username = tokenValidator.extractUserId(token);
+            // extract user id, first name, last name, email from token
+            String email = tokenValidator.extractEmail(token);
+            String firstName = tokenValidator.extractFirstName(token);
+            String lastName = tokenValidator.extractLastName(token);
+
+            UserPrincipal userPrincipal = new UserPrincipal(userId,email,firstName,lastName);
+            //UserPrincipal userPrincipal = UserPrincipal.builder().id(userId)...
+
+
+            // Extract roles from the token
             List<String> roles = tokenValidator.extractRoles(token);
-
-            //String username = "user";
-           // List<String> roles = new ArrayList<>();
-
             List<GrantedAuthority> authorities = roles != null ?
                     roles.stream()
                             .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
@@ -56,7 +61,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                     new ArrayList<>();
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    new UsernamePasswordAuthenticationToken(userPrincipal, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

@@ -52,6 +52,24 @@ public class SkillMentorJwtValidator implements TokenValidator {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    @Override
+    public String extractFirstName(String token) {
+        return null;
+    }
+
+    @Override
+    public String extractLastName(String token) {
+        return null;
+    }
+
+    @Override
+    public String extractEmail(String token) {
+        return null;
+    }
+
+>>>>>>> Stashed changes
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
