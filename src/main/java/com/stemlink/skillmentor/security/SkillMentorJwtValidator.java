@@ -39,22 +39,6 @@ public class SkillMentorJwtValidator implements TokenValidator {
     }
 
     @Override
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parseSignedClaims(token);
-            return true;
-        } catch (Exception e) {
-            log.error("Failed to validate JWT token: {}",e.getMessage());
-            return false;
-        }
-    }
-
-<<<<<<< Updated upstream
-=======
-    @Override
     public String extractFirstName(String token) {
         return null;
     }
@@ -69,7 +53,22 @@ public class SkillMentorJwtValidator implements TokenValidator {
         return null;
     }
 
->>>>>>> Stashed changes
+
+    @Override
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (Exception e) {
+            log.error("Failed to validate JWT token: {}",e.getMessage());
+            return false;
+        }
+    }
+
+
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())

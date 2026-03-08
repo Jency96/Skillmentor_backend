@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-   // private final ClerkValidator clerkValidator;
-
     //  first hit BASE VALIDATOR. then decide if it is --> clerk, aws or service token
     //then go to filter and validate the token
 
@@ -35,9 +33,18 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull FilterChain filterChain)
             throws ServletException, IOException {
 
-        System.out.println("JWT FILTER HIT");
-
         String token = extractToken(request);
+
+        if (token != null) {
+            System.out.println("Token found");
+
+            if (tokenValidator.validateToken(token)) {
+                System.out.println("Token VALID");
+            } else {
+                System.out.println("Token INVALID");
+            }
+        }
+
 
         if (token != null && tokenValidator.validateToken(token)) {
             String userId = tokenValidator.extractUserId(token);
