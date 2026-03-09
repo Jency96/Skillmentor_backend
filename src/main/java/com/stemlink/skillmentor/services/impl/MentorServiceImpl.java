@@ -4,9 +4,12 @@ import com.stemlink.skillmentor.entities.Mentor;
 import com.stemlink.skillmentor.exceptions.SkillMentorException;
 import com.stemlink.skillmentor.repositories.MentorRepository;
 import com.stemlink.skillmentor.services.MentorService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,7 @@ public class MentorServiceImpl implements MentorService {
     private final MentorRepository mentorRepository;
     private final ModelMapper modelMapper;
 
+    @CacheEvict(value = "mentors", allEntries = true)
     public Mentor createNewMentor(Mentor mentor) {
         try {
             return mentorRepository.save(mentor);
@@ -32,6 +36,7 @@ public class MentorServiceImpl implements MentorService {
         }
     }
 
+    @Cacheable(value = "mentors", key = "#pageable.pageNumber + '_' + #pageable.pageSize")
     public Page<Mentor> getAllMentors(Pageable pageable) {
         try {
             log.debug("getting mentors");
